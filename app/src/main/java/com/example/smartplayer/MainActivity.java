@@ -3,11 +3,15 @@ package com.example.smartplayer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -81,5 +85,19 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TAG","Check items all : "+itemsAll[0]);
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, itemsAll);
         songListView.setAdapter(arrayAdapter);
+
+        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String songName=songListView.getItemAtPosition(i).toString();
+
+                Intent intent=new Intent(MainActivity.this, SmartPlayerActivity.class);
+                intent.putExtra("song", audioSongs);
+                intent.putExtra("name", songName);
+                intent.putExtra("position", i);
+//                Toast.makeText(MainActivity.this,""+songName,Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+        });
     }
 }
